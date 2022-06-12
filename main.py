@@ -5,6 +5,10 @@ import json
 from datetime import datetime
 import logging
 
+from battleroyale import get_brmap
+from arenas import get_armap
+from crafting import get_crafting
+
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -19,45 +23,6 @@ TOKEN = os.environ['TOKEN']
 APIKEY = os.environ['APIKEY']
 
 client = discord.Client()
-
-def get_brmap():
-  response = requests.get(f"https://api.mozambiquehe.re/maprotation?version=2&auth={APIKEY}")
-  json_data = response.json()
-  print(datetime.now(), ": br map rotation requested")
-  map = json_data['battle_royale']['current']['map']
-  time = json_data['battle_royale']['current']['remainingTimer']
-  image = json_data['battle_royale']['current']['asset']
-  nextmap = json_data['battle_royale']['next']['map']
-  return(map, time, image, nextmap)
-
-def get_armap():
-  response = requests.get(f"https://api.mozambiquehe.re/maprotation?version=2&auth={APIKEY}")
-  json_data = response.json()
-  print(datetime.now(), ": arenas map rotation requested")
-  map = json_data['arenas']['current']['map']
-  time = json_data['arenas']['current']['remainingTimer']
-  image = json_data['arenas']['current']['asset']
-  nextmap = json_data['arenas']['next']['map']
-  return(map, time, image, nextmap)
-
-def get_crafting():
-  response = requests.get(f"https://api.mozambiquehe.re/crafting?auth={APIKEY}")
-  json_data = response.json()
-  print(datetime.now(), ": crafting rotation requested")
-  dailybundle = json_data[0]['bundle']
-  weeklybundle = json_data[1]['bundle']
-  
-  daily1 = json_data[0]['bundleContent'][0]['itemType']['name']
-  dailyicon1 = json_data[0]['bundleContent'][0]['itemType']['asset']
-  daily2 = json_data[0]['bundleContent'][1]['itemType']['name']
-  dailyicon2 = json_data[0]['bundleContent'][1]['itemType']['asset']
-
-  weekly1 = json_data[1]['bundleContent'][0]['itemType']['name']  
-  weeklyicon1 = json_data[1]['bundleContent'][0]['itemType']['asset']
-  weekly2 = json_data[1]['bundleContent'][1]['itemType']['name']
-  weeklyicon2 = json_data[1]['bundleContent'][1]['itemType']['asset']
-  
-  return(dailybundle, daily1, daily2, dailyicon1, dailyicon2, weeklybundle, weekly1, weekly2, weeklyicon1, weeklyicon2)
 
 def get_quote():
   response = requests.get("https://zenquotes.io/api/random")
